@@ -1,6 +1,8 @@
 #include <iostream>
-
+#include <windows.h>
+#include <conio.h>
+using namespace std;
 int main() {
-    std::cout << "hello world" << std::endl;
-    return 0;
+    char c=_getch();
+    cout<<c;
 }
