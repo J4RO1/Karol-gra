@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 #include <conio.h>
 using namespace std;
 int main()
@@ -26,5 +27,14 @@ while(true){
 }
 system("cls");
 int wymiar=opcje[wybrana];
-cout<<"Wybrano: "<<wymiar;
+int limit;
+cout<<"Teraz wybierz, ile jablek chcesz, zeby Jim zjadl.\n";
+while(true){
+    cin>>limit;
+    if(limit<1 || limit>1 && limit<5) cout<<"Nie za malo? Daj Jimowi zjesc choc 5 jablek!\n";
+    else if(limit>50) cout<<"Nie za duzo? Jim sie przeje! Daj mu nie wiecej niz 50.\n";
+    if(limit==1 || limit>=5 && limit<=50) break;
+}
+system("cls");
+cout<<"No to zaczynajmy!\n\nWcisnij dowolny przycisk.";
 }
