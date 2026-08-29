@@ -37,4 +37,6 @@ while(true){
 }
 system("cls");
 cout<<"No to zaczynajmy!\n\nWcisnij dowolny przycisk.";
+int t[wymiar][wymiar];
+
 }
