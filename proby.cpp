@@ -1,15 +1,24 @@
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
+void WrocNaPoczatek(){
+    COORD pozycja;
+    pozycja.X=1;
+    pozycja.Y=1;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pozycja);
+}
+void HideCursor()
+{
+    CONSOLE_CURSOR_INFO info={1,false};
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&info);
+}
 using namespace std;
 int main()
 {
-while(true){
-    cout<<"program se leci\n";
-    if(_kbhit()){
-        int klawisz=_getch();
-        cout<<"Wcisnieto: "<<klawisz<<endl;
-    }
-    Sleep(250);
-}
+    HideCursor();
+    cout<<"1234567890";
+    _getch();
+    WrocNaPoczatek();
+    _getch();
+    cout<<2;
 }
