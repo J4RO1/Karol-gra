@@ -1,12 +1,15 @@
 #include <iostream>
 #include <conio.h>
+#include <windows.h>
 using namespace std;
-int t[25][25];
-int main(){
-for(int i=0;i<25;i++){
-    for(int j=0;j<25;j++){
-        cout<<t[i][j];
+int main()
+{
+while(true){
+    cout<<"program se leci\n";
+    if(_kbhit()){
+        int klawisz=_getch();
+        cout<<"Wcisnieto: "<<klawisz<<endl;
     }
-    cout<<endl;
+    Sleep(250);
 }
 }

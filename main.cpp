@@ -38,5 +38,69 @@ while(true){
 system("cls");
 cout<<"No to zaczynajmy!\n\nWcisnij dowolny przycisk.";
 int t[wymiar][wymiar];
-
+for(int i=0;i<wymiar;i++){
+    for(int j=0;j<wymiar;j++){
+        t[i][j]=0;
+    }
+}
+t[wymiar-6][(wymiar+1)/2-1]=1;
+t[wymiar-5][(wymiar+1)/2-1]=2;
+t[wymiar-4][(wymiar+1)/2-1]=3;
+int wynik=3;
+int koniec=wynik+limit;
+int kierunek=72;
+bool przegrana=false;
+bool wygrana=false;
+while(true){
+    if(_kbhit()){
+        kierunek=_getch();
+        if(kierunek==224){
+            kierunek=_getch();
+        }
+    }
+    system("cls");
+    for(int i=0;i<wymiar;i++){
+        for(int j=0;j<wymiar;j++){
+            if(t[i][j]==wynik) t[i][j]=0;
+            if(t[i][j]!=0) t[i][j]=t[i][j]+1;
+        }
+    }
+    for(int i=0;i<wymiar;i++){
+        for(int j=0;j<wymiar;j++){
+            if(t[i][j]==2){
+                if(kierunek==72){
+                    if(t[i-1][j]==0) t[i-1][j]=1;
+                    else if(t[i-1][j]==3) t[i+1][j]=1;
+                         else przegrana=true;
+                }
+                else if(kierunek==75){
+                        if(t[i][j-1]==0) t[i][j-1]=1;
+                        else if(t[i][j-1]==3) t[i][j+1]=1;
+                             else przegrana=true;
+                    }
+                else if(kierunek==77){
+                        if(t[i][j+1]==0) t[i][j+1]=1;
+                        else if(t[i][j+1]==3) t[i][j-1]=1;
+                             else przegrana=true;
+                    }
+                else if(kierunek==80){
+                        if(t[i+1][j]==0) t[i+1][j]=1;
+                        else if(t[i+1][j]==3) t[i-1][j]=1;
+                             else przegrana=true;
+                    }
+            }
+        }
+    }
+    if(przegrana || wygrana) break;
+    for(int i=0;i<wymiar;i++){
+        for(int j=0;j<wymiar;j++){
+            if(t[i][j]!=0) cout<<"#";
+            else cout<<" ";
+        }
+        cout<<endl;
+    }
+    Sleep(250);
+}
+system("cls");
+if(przegrana) cout<<"Przegrales!";
 }
