@@ -2,6 +2,12 @@
 #include <windows.h>
 #include <conio.h>
 #include <ctime>
+
+#define reset "\033[0m"
+#define GREEN "\033[38;2;0;225;0m"
+#define RED   "\033[38;2;255;0;0m"
+#define WHITE "\033[38;2;255;255;255m"
+#define SQUARE char(254)
 using namespace std;
 void GoToStart()
 {
@@ -22,7 +28,13 @@ void ShowCursor()
 }
 int main()
 {
+{
+HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+DWORD dwMode;
+GetConsoleMode(hOut, &dwMode);
+SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 srand(time(NULL));
+}
 cout<<"Witaj drogi graczu w grze o wezu Jimie!\nJim jest bardzo glodny, wiec pomoz mu znalezc i zjesc wszystkie jablka!\n\nWcisnij dowolny przycisk.";
 _getch();
 int opcje[]={10,15,20,25};
@@ -46,11 +58,56 @@ while(true){
     }
     if(klawisz==13) break;
 }
-ShowCursor();
 system("cls");
 int wymiar=opcje[wybrana];
+int opcje1[]={1,2,3,4,5,6};
+wybrana=0;
+liczba_opcji=6;
+while(true){
+    GoToStart();
+    cout<<"Swietnie! Teraz wybierz, ile naraz jablek ma pojawiac sie na planszy.\n\n";
+    for(int i=0;i<liczba_opcji;i++){
+        if(i==wybrana) cout<<"> ";
+        else cout<<"  ";
+        cout<<opcje1[i]<<endl;
+    }
+    int klawisz=_getch();
+    if(klawisz==224){
+        klawisz=_getch();
+        if(klawisz==72) wybrana=(wybrana+liczba_opcji-1)%liczba_opcji;
+        if(klawisz==80) wybrana=(wybrana+1)%liczba_opcji;
+    }
+    else if(klawisz==13) break;
+}
+system("cls");
+int il_jab=opcje1[wybrana];
+string opcje2[]={"wolno","zwyczajnie","szybko"};
+liczba_opcji=3;
+wybrana=0;
+while(true){
+    GoToStart();
+    cout<<"Okej. Teraz, jak szybko poruszac ma sie Jim?\n\n";
+    for(int i=0;i<liczba_opcji;i++){
+        if(i==wybrana) cout<<"> ";
+        else cout<<"  ";
+        cout<<opcje2[i]<<endl;
+    }
+    int klawisz=_getch();
+    if(klawisz==224){
+        klawisz=_getch();
+        if(klawisz==72) wybrana=(wybrana+liczba_opcji-1)%liczba_opcji;
+        if(klawisz==80) wybrana=(wybrana+1)%liczba_opcji;
+    }
+    else if(klawisz==13) break;
+}
+int v;
+if(wybrana==0) v=200;
+if(wybrana==1) v=100;
+if(wybrana==2) v=25;
+system("cls");
+ShowCursor();
 int limit;
-cout<<"Teraz wybierz, ile jablek chcesz, zeby Jim zjadl.\n";
+cout<<"Teraz wpisz, ile jablek chcesz, zeby Jim zjadl.\n";
 while(true){
     cin>>limit;
     if(limit<1 || limit>1 && limit<5) cout<<"Nie za malo? Daj Jimowi zjesc choc 5 jablek!\n";
@@ -77,6 +134,7 @@ int wsp_i1=wymiar-6,wsp_j1=(wymiar+1)/2-1;
 int wsp_iost=wymiar-4,wsp_jost=(wymiar+1)/2-1;
 int wsp_i_jab,wsp_j_jab;
 int tymcz_kier;
+for(int i=0;i<il_jab;i++){
 while(true){
     wsp_i_jab=rand()%wymiar;
     wsp_j_jab=rand()%wymiar;
@@ -84,6 +142,7 @@ while(true){
         t[wsp_i_jab][wsp_j_jab]=1111;
         break;
     }
+}
 }
 _getch();
 HideCursor();
@@ -313,20 +372,21 @@ while(true){
     }
     if(wynik==koniec+3) wygrana=true;
     if(przegrana || wygrana) break;
-    cout<<"Twoj aktualny wynik: "<<wynik-3<<"      Cel: "<<koniec<<endl;
-    for(int i=0;i<wymiar+2;i++) cout<<"+";
+    cout<<"Twoj aktualny wynik: "<<wynik-3<<"      Cel: "<<koniec<<"      Autor: Karol Janicki\n";
+    for(int i=0;i<wymiar+2;i++) cout<<WHITE<<SQUARE<<reset<<" ";
     cout<<endl;
     for(int i=0;i<wymiar;i++){
-        cout<<"+";
+        cout<<WHITE<<SQUARE<<reset<<" ";
         for(int j=0;j<wymiar;j++){
-            if(t[i][j]>1000) cout<<"$";
-            else if(t[i][j]!=0) cout<<"#";
+            if(t[i][j]>1000) cout<<RED<<SQUARE<<reset;
+            else if(t[i][j]!=0) cout<<GREEN<<SQUARE<<reset;
             else cout<<" ";
+            cout<<" ";
         }
-        cout<<"+";
+        cout<<WHITE<<SQUARE<<reset;
         cout<<endl;
     }
-    for(int i=0;i<wymiar+2;i++) cout<<"+";
+    for(int i=0;i<wymiar+2;i++) cout<<WHITE<<SQUARE<<reset<<" ";
     cout<<endl;
     cout<<"Wspolrzedne glowy Jima: x: ";
     if(wsp_j1<10) cout<<0<<wsp_j1;
@@ -334,12 +394,12 @@ while(true){
     cout<<"  y: ";
     if(wsp_i1<10) cout<<0<<wsp_i1;
     else cout<<wsp_i1;
-    Sleep(100);
+    Sleep(v);
 }
 ShowCursor();
 system("cls");
 cout<<"Uzyskany wynik: "<<wynik-3<<"/"<<koniec<<endl;
-if(przegrana) cout<<"Przegrales!\nPrzez Ciebie Jim bedzie glodowac!\nNie mozemy tego tak zostawic!\nSprobuj jeszcze raz!\n";
+if(przegrana) cout<<"Przegrales!\nPrzez Ciebie Jim bedzie glodowac! :1\nNie mozemy tego tak zostawic!\nSprobuj jeszcze raz!\n";
 if(wygrana) cout<<"Wygrales!\nGratulacje!!!\nDzieki Tobie, Jim jest najedzony i wdzieczny!\n\n";
 cout<<"Wcisnij enter, aby wyjsc.";
 while(true) if(_getch()==13) break;
