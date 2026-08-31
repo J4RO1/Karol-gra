@@ -69,7 +69,7 @@ t[wymiar-6][(wymiar+1)/2-1]=1;
 t[wymiar-5][(wymiar+1)/2-1]=2;
 t[wymiar-4][(wymiar+1)/2-1]=3;
 int wynik=3;
-int koniec=wynik+limit;
+int koniec=limit;
 int kierunek=72;
 bool przegrana=false;
 bool wygrana=false;
@@ -311,9 +311,9 @@ while(true){
         else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
         else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
     }
-    if(wynik==koniec) wygrana=true;
+    if(wynik==koniec+3) wygrana=true;
     if(przegrana || wygrana) break;
-    cout<<"Twoj aktualny wynik: "<<wynik<<"      Ilosc max pkt do zdobycia: "<<koniec<<endl;
+    cout<<"Twoj aktualny wynik: "<<wynik-3<<"      Cel: "<<koniec<<endl;
     for(int i=0;i<wymiar+2;i++) cout<<"+";
     cout<<endl;
     for(int i=0;i<wymiar;i++){
@@ -328,10 +328,17 @@ while(true){
     }
     for(int i=0;i<wymiar+2;i++) cout<<"+";
     cout<<endl;
+    cout<<"Wspolrzedne glowy Jima: x: ";
+    if(wsp_j1<10) cout<<0<<wsp_j1;
+    else cout<<wsp_j1;
+    cout<<"  y: ";
+    if(wsp_i1<10) cout<<0<<wsp_i1;
+    else cout<<wsp_i1;
     Sleep(100);
 }
 ShowCursor();
 system("cls");
+cout<<"Uzyskany wynik: "<<wynik-3<<"/"<<koniec<<endl;
 if(przegrana) cout<<"Przegrales!\nPrzez Ciebie Jim bedzie glodowac!\nNie mozemy tego tak zostawic!\nSprobuj jeszcze raz!\n";
 if(wygrana) cout<<"Wygrales!\nGratulacje!!!\nDzieki Tobie, Jim jest najedzony i wdzieczny!\n\n";
 cout<<"Wcisnij enter, aby wyjsc.";
