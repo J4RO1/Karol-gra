@@ -28,13 +28,11 @@ void ShowCursor()
 }
 int main()
 {
-{
 HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 DWORD dwMode;
 GetConsoleMode(hOut, &dwMode);
 SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 srand(time(NULL));
-}
 cout<<"Witaj drogi graczu w grze o wezu Jimie!\nJim jest bardzo glodny, wiec pomoz mu znalezc i zjesc wszystkie jablka!\n\nWcisnij dowolny przycisk.";
 _getch();
 int opcje[]={10,15,20,25};
@@ -110,7 +108,12 @@ int limit;
 cout<<"Teraz wpisz, ile jablek chcesz, zeby Jim zjadl.\n";
 while(true){
     cin>>limit;
-    if(limit<1 || limit>1 && limit<5) cout<<"Nie za malo? Daj Jimowi zjesc choc 5 jablek!\n";
+    if(cin.fail()){
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout<<"Ale wpisz liczbe...\n";
+    }
+    else if(limit<1 || limit>1 && limit<5) cout<<"Nie za malo? Daj Jimowi zjesc choc 5 jablek!\n";
     else if(limit>50) cout<<"Nie za duzo? Jim sie przeje! Daj mu nie wiecej niz 50.\n";
     if(limit==1 || limit>=5 && limit<=50) break;
 }
@@ -149,7 +152,7 @@ HideCursor();
 system("cls");
 while(true){
     bool czy_jablko=false;
-    if(_kbhit()){
+    while(_kbhit()){
         tymcz_kier=kierunek;
         kierunek=_getch();
         if(kierunek==224){
@@ -170,7 +173,12 @@ while(true){
                     if(wsp_i1==0){
                         przegrana=true;
                     }
-                    else if(t[i-1][j]==0){
+                    else if(t[i-1][j]==0 || wynik==4 && t[i-1][j]==5){
+                        t[wsp_iost][wsp_jost]=0;
+                        if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                        else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                        else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                        else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                         t[i-1][j]=1;
                         wsp_i1=i-1;
                     }
@@ -180,6 +188,11 @@ while(true){
                                 przegrana=true;
                             }
                             else if(t[i+1][j]==0){
+                                t[wsp_iost][wsp_jost]=0;
+                                if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                                else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                                else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                                else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                                 t[i+1][j]=1;
                                 wsp_i1=i+1;
                             }
@@ -219,7 +232,12 @@ while(true){
                     if(wsp_j1==0){
                         przegrana=true;
                     }
-                    else if(t[i][j-1]==0){
+                    else if(t[i][j-1]==0 || wynik==4 && t[i][j-1]==5){
+                        t[wsp_iost][wsp_jost]=0;
+                        if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                        else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                        else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                        else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                         t[i][j-1]=1;
                         wsp_j1=j-1;
                     }
@@ -229,6 +247,11 @@ while(true){
                                 przegrana=true;
                             }
                             else if(t[i][j+1]==0){
+                                t[wsp_iost][wsp_jost]=0;
+                                if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                                else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                                else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                                else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                                 t[i][j+1]=1;
                                 wsp_j1=j+1;
                             }
@@ -268,7 +291,12 @@ while(true){
                     if(wsp_j1==wymiar-1){
                         przegrana=true;
                     }
-                    else if(t[i][j+1]==0){
+                    else if(t[i][j+1]==0 || wynik==4 && t[i][j+1]==5){
+                        t[wsp_iost][wsp_jost]=0;
+                        if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                        else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                        else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                        else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                         t[i][j+1]=1;
                         wsp_j1=j+1;
                     }
@@ -278,6 +306,11 @@ while(true){
                                 przegrana=true;
                             }
                             else if(t[i][j-1]==0){
+                                t[wsp_iost][wsp_jost]=0;
+                                if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                                else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                                else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                                else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                                 t[i][j-1]=1;
                                 wsp_j1=j-1;
                             }
@@ -317,7 +350,12 @@ while(true){
                     if(wsp_i1==wymiar-1){
                         przegrana=true;
                     }
-                    else if(t[i+1][j]==0){
+                    else if(t[i+1][j]==0 || wynik==4 && t[i+1][j]==5){
+                        t[wsp_iost][wsp_jost]=0;
+                        if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                        else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                        else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                        else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                         t[i+1][j]=1;
                         wsp_i1=i+1;
                     }
@@ -327,6 +365,11 @@ while(true){
                                 przegrana=true;
                             }
                             else if(t[i-1][j]==0){
+                                t[wsp_iost][wsp_jost]=0;
+                                if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
+                                else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
+                                else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
+                                else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
                                 t[i-1][j]=1;
                                 wsp_i1=i-1;
                             }
@@ -362,13 +405,6 @@ while(true){
                                 czy_jablko=true;
                               }
                 }
-    }
-    if(!czy_jablko){
-        t[wsp_iost][wsp_jost]=0;
-        if(wsp_iost!=0 && t[wsp_iost-1][wsp_jost]==wynik) wsp_iost--;
-        else if(wsp_iost!=wymiar-1 && t[wsp_iost+1][wsp_jost]==wynik) wsp_iost++;
-        else if(wsp_jost!=0 && t[wsp_iost][wsp_jost-1]==wynik) wsp_jost--;
-        else if(wsp_jost!=wymiar-1 && t[wsp_iost][wsp_jost+1]==wynik) wsp_jost++;
     }
     if(wynik==koniec+3) wygrana=true;
     if(przegrana || wygrana) break;
